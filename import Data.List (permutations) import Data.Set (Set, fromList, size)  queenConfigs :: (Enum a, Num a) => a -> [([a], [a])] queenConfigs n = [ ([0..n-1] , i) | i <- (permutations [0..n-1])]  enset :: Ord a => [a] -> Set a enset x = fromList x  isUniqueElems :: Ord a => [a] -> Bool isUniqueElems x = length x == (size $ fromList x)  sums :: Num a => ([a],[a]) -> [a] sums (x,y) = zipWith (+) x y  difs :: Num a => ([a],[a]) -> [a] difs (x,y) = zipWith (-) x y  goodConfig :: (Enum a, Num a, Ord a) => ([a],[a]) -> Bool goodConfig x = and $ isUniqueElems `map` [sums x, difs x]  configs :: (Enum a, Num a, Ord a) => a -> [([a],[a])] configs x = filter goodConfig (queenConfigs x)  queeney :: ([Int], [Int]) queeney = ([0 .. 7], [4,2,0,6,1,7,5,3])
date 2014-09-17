@@ -1,0 +1,31 @@
+import Data.List (permutations)
+import Data.Set (Set, fromList, size)
+
+queenConfigs :: (Enum a, Num a) => a -> [([a], [a])]
+queenConfigs n = [ ([0..n-1] , i) | i <- (permutations [0..n-1])]
+
+enset :: Ord a => [a] -> Set a
+enset x = fromList x
+
+isUniqueElems :: Ord a => [a] -> Bool
+isUniqueElems x = length x == (size $ fromList x)
+
+sums :: Num a => ([a],[a]) -> [a]
+sums (x,y) = zipWith (+) x y
+
+difs :: Num a => ([a],[a]) -> [a]
+difs (x,y) = zipWith (-) x y
+
+goodConfig :: (Enum a, Num a, Ord a) => ([a],[a]) -> Bool
+goodConfig x = and $ isUniqueElems `map` [sums x, difs x]
+
+configs :: (Enum a, Num a, Ord a) => a -> [([a],[a])]
+configs x = filter goodConfig (queenConfigs x)
+
+queeney :: ([Int], [Int])
+queeney = ([0 .. 7], [4,2,0,6,1,7,5,3])
+
+
+
+
+
